@@ -8,6 +8,10 @@ var MODE_DAILY = 0
 var MODE_CURRENT = 1
 var MODE_CUMULATIVE = 2
 var MODE_WEEKLY = 3
+
+var CHART_LINE = 0
+var CHART_BAR = 1
+
 var TREND_WINDOW = 14;
 
 
@@ -190,8 +194,7 @@ visualizeSevenDays = function(svg, data, xOffset, field, color, mode){
         .range([0, chartWidth-barWidth])
 
     // get 7 last entries
-    var len = data.length;
-    data = data.slice(len-TREND_WINDOW,len)
+    data = data.slice(data.length-TREND_WINDOW)
 
     var max = d3.max(data, function(d){ 
         return parseInt(d[field]);
@@ -200,7 +203,36 @@ visualizeSevenDays = function(svg, data, xOffset, field, color, mode){
         .domain([0, max])
         .range([chartHeight,0]);
 
-    g.selectAll("bar")
+    if(mode == MODE_CUMULATIVE
+    || mode == MODE_CURRENT)
+    {
+         g.append("path")
+            .datum(data)
+            .attr("fill", color)
+            .style('opacity', .4)
+            .attr("d", d3.svg.area()
+                .x(function(d,i) { return x(i) })
+                .y0( 40 )
+                .y1(function(d) { return y(d[field]); })
+            )
+
+        g.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", color)
+            .attr("stroke-width", 2)
+            .attr("d", d3.svg.line()
+                .x(function(d,i) { return x(i) })
+                .y(function(d) { return y(d[field]); })
+            )
+
+        g.append("circle")
+            .attr("fill", color)
+            .attr("r", 3)
+            .attr("cx", x(data.length-1))
+            .attr("cy", y(data[data.length-1][field]))
+    }else{
+        g.selectAll("bar")
         .data(data)
         .enter().append("rect")
             .style("fill", function(d,i){
@@ -211,6 +243,8 @@ visualizeSevenDays = function(svg, data, xOffset, field, color, mode){
             .attr("width", barWidth)
             .attr("y", function(d) { return y(d[field]); })
             .attr("height", function(d) { return chartHeight - y(d[field]); });
+    }
+ 
 }
 
 setTitle = function(g,text){
