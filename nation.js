@@ -9,11 +9,11 @@ var MODE_CURRENT = 1
 var MODE_CUMULATIVE = 2
 var MODE_WEEKLY = 3
 
-var CHART_LINE = 0
-var CHART_BAR = 1
-
 var TREND_WINDOW = 14;
 
+var COLOR_DEATHS = '#e93516';
+var COLOR_TESTS = '#f0852d';
+var COLOR_HOSPITAL = '#1a6158';
 
 load = function(id, title, field, color, url, mode, percentage)
 {
@@ -36,9 +36,9 @@ load = function(id, title, field, color, url, mode, percentage)
 
 
 // load nation data
-load("#cases", 'New Cases', 'Testing - New cases reported', '#f0852d', "data/date_country_new_cases_reported.csv", MODE_DAILY);
-load("#deaths",'Covd 19 Deaths', '1', '#e93516', "data/date_country_covid19_confirmed_deaths_registered_cumulative.csv", MODE_CUMULATIVE);
-load("#icu",'Patients in ICU', 'COVID-19 patients in ICU - Confirmed', '#1a6158', "data/date_country_covid19_patients_in_icu_confirmed.csv", MODE_CURRENT);
+load("#cases", 'New Cases', 'Testing - New cases reported', COLOR_TESTS, "data/date_country_new_cases_reported.csv", MODE_DAILY);
+load("#deaths",'Covd 19 Deaths', '1', COLOR_DEATHS, "data/date_country_covid19_confirmed_deaths_registered_cumulative.csv", MODE_CUMULATIVE);
+load("#icu",'Patients in ICU', 'COVID-19 patients in ICU - Confirmed', COLOR_HOSPITAL, "data/date_country_covid19_patients_in_icu_confirmed.csv", MODE_CURRENT);
 
 // load nhs-board data
 var board = 'Lothian'
@@ -47,7 +47,7 @@ $('#board' ).text(board);
 load("#board-hospital-normalized", 
     'Covid19 Patients in Hospital, Normalized', 
     board, 
-    '#2a9d8f', 
+    d3.rgb(COLOR_HOSPITAL).darker(1), 
     "data/nhs_health_board_date_covid19_patients_in_hospital_confirmed_normalized.csv", 
     MODE_CURRENT, 
     true);
@@ -55,28 +55,28 @@ load("#board-hospital-normalized",
 load("#board-hospital", 
     'Covid19 Patients in Hospital', 
     board, 
-    '#228176', 
+    COLOR_HOSPITAL, 
     "data/nhs_health_board_date_covid19_patients_in_hospital_confirmed.csv", 
     MODE_CURRENT);
 
 load("#board-covid-icu", 
     'Covid19 Patients in ICU', 
     board, 
-    '#1a6158', 
+    d3.rgb(COLOR_HOSPITAL).brighter(1), 
     "data/nhs_health_board_date_covid19_patients_in_icu_confirmed.csv",
      MODE_CURRENT);
 
 load("#tests", 
     'Daily Tests', 
     board, 
-    '#f0852d', 
+    COLOR_TESTS, 
     "data/nhsboard_date_total_daily_tests_reported.csv",
      MODE_DAILY);
 
 load("#covid-deaths", 
     'Covid19 related deaths (weekly)', 
     board, 
-    '#e93516', 
+    COLOR_DEATHS, 
     "data/nhs_health_board_week_covid_related_deaths.csv",
     MODE_WEEKLY);
 
@@ -84,7 +84,7 @@ load("#covid-deaths",
 load("#all-deaths", 
     'All Deaths (weekly)', 
     board, 
-    '#ed553B', 
+    d3.rgb(COLOR_DEATHS).darker(1), 
     "data/nhs_health_board_week_all_deaths.csv",
     MODE_WEEKLY);
 
