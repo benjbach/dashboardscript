@@ -1,0 +1,47 @@
+div#main{ 
+    font-family:"Poppins";
+    margin:20px;
+}
+
+table.layout tr{
+    vertical-align: top;
+}
+
+table.layout td{
+    padding-right: 40px;
+}
+
+
+h1{
+    font-weight: bold;
+}
+
+.thin{
+    margin-top: 0px;
+    font-weight: 200;
+}
+
+text.bigNumber{
+    font-size: 35pt;
+    font-weight: bold;
+}
+
+.arrow{
+    stroke-width: 7;
+    stroke-linecap: round;
+}
+
+.label{
+    font-weight: 300;
+    font-size: 12pt;
+}
+
+.title{
+    font-weight: bold;
+    font-size: 20;
+}
+
+.separator{
+    stroke: #ddd;
+}
+  

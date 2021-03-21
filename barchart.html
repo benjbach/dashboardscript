@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+  </head>
+  <body>
+    <h1>NATION OVERVIEW</h1>
+    <h1>Scotland</h1>
+    <div>
+      <h3>Cases</h3>
+      <div id="cases"></div>
+    </div>
+    <div>
+      <h3>ICU</h3>
+      <div id="icu"></div>
+    </div>
+    <div>
+      <h3>Deaths</h3>
+      <div id="deaths"></div>
+    </div>
+    <script type="text/javascript">
+        $.getJSON("cases.json", function(spec) {
+          const opt = {renderer: "canvas", actions: false};  /* Options for the embedding */
+          vegaEmbed("#cases", spec, opt);          
+        });
+        $.getJSON("deaths.json", function(spec) {
+          const opt = {renderer: "canvas", actions: false};  /* Options for the embedding */
+          vegaEmbed("#deaths", spec, opt);          
+        });
+        $.getJSON("icu.json", function(spec) {
+          const opt = {renderer: "canvas", actions: false};  /* Options for the embedding */
+          vegaEmbed("#icu", spec, opt);          
+        });
+    </script>
+  </body>
+</html>

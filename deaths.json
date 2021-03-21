@@ -1,0 +1,20 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "https://raw.githubusercontent.com/visualinteractivedata/visualinteractivedata.github.io/master/rampvis/date_country_covid19_confirmed_deaths_registered_cumulative.csv"},
+    "mark": "bar",
+    "width": 100,
+    "height": 50,
+    "encoding": {
+      "x": {
+        "field": "date",
+        "type": "temporal",
+        "title": " "
+      },
+        "y": {
+          "field": "1",
+          "type":"quantitative",
+          "title": " "
+        }
+    }
+}
+    

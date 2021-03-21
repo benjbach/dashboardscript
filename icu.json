@@ -1,0 +1,20 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "data/date_country_covid19_patients_in_icu_confirmed.csv"},
+    "mark": "bar",
+    "width": 100,
+    "height": 50,
+    "encoding": {
+      "x": {
+        "field": "date",
+        "type": "temporal", 
+        "title": " "
+      },
+       "y": {
+          "field": "COVID-19 patients in ICU - Confirmed",
+          "title": " ",
+          "type":"quantitative"
+        }
+      }
+  }
+  
