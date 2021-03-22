@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
 var height = 150;
-var width = 500;
+var width = 510;
 var baseline_title = 22
 var baseline_label = height - 30;
 var top_content = baseline_title + 30;
@@ -9,10 +9,10 @@ var MODE_CURRENT = 1
 var MODE_CUMULATIVE = 2
 var MODE_WEEKLY = 3
 
-// var COLOR_DEATHS = '#e93516';
-// var COLOR_TESTS = '#f0852d';
-// var COLOR_HOSPITAL = '#1a6158';
+var LINE_1 = 17;
+var LINE_2 = 40;
 
+var FONT_OFFSET = 27;
 var COLOR_CASES = '#e93516';   // orange
 var COLOR_DEATHS = '#f0852d';   // orange
 var COLOR_TESTS = '#2a9d8f';    // green
@@ -20,9 +20,9 @@ var COLOR_HOSPITAL = '#264653'; // blue
 
 load = function(id, title, field, color, url, mode, normalized)
 {
-    
     d3.csv(url, function(data) {
     
+        $('#date').text(data[data.length-1].date);   
         console.log('load ' +title)
         var svg = d3.select(id)
             .append("svg")
@@ -32,8 +32,8 @@ load = function(id, title, field, color, url, mode, normalized)
         setTitle(svg,title)                
         visualizeNumber(svg, data, 0, field, color, mode, normalized)
         if(mode != MODE_CUMULATIVE)
-            visualizeTrend(svg, data, 200, field, color, mode)
-        visualizeSevenDays(svg, data, 350, field, color, mode);   
+            visualizeTrend(svg, data, 250, field, color, mode)
+        visualizeSevenDays(svg, data, 400, field, color, mode);   
     })    
 }
 
@@ -123,29 +123,72 @@ visualizeNumber = function(svg, data, xOffset, field, color, mode, normalized){
         setLabel(g,'Total')
     }
  
-    var v = Math.round(data[data.length-1][field] * 10) / 10;
-            v = v.toLocaleString(
+    var val = Math.round(data[data.length-1][field] * 10) / 10;
+            val = val.toLocaleString(
                 undefined)
 
+    var bigNumber = {}
     var t = g.append('text')
-        .text(v)
+        .text(val)
         .attr('y', top_content + 40)
         .attr('class', 'bigNumber')
         .style('fill', color)
-    
+        .each(function() {
+            bigNumber.width = this.getBBox().width;
+        })
+
 
     if(normalized){
         g.append('text')
             .text('per')
-            .attr('x', v*9.5)
-            .attr('y', top_content+15)
+            .attr('x', bigNumber.width + 5)
+            .attr('y', top_content + LINE_1)
             .attr('class', 'thin')
         g.append('text')
             .text('100,000')
-            .attr('x', v*9.5)
-            .attr('y', top_content+38)
+            .attr('x', bigNumber.width + 5)
+            .attr('y', top_content + LINE_2)
             .attr('class', 'thin')
+    }else{
+        // show rank
+        var values = data[data.length-1];
+        var array = []
+        for(var v in values){
+            array.push([v,values[v]])
+        }
+        array.sort(function(a,b){
+            return a[1] - b[1];
+        })
+   
+        var rank;
+        for(var i=1 ; i<array.length-1 ; i++){
+            if(array[i][0] == field){
+                rank = i;
+                break;
+            }
+        }
+
+
+        if(rank){
+            g.append('text')
+                .text(function(){
+                    if(rank == 1) return '1st';
+                    else if(rank == 2) return '2nd';
+                    else if(rank == 3) return '3rd';
+                    else return rank + 'th';
+                })
+                .attr('x', bigNumber.width + 5)
+                .attr('y', top_content + LINE_1)
+                .attr('class', 'thin')
+            g.append('text')
+                .text('Scotland')
+                .attr('x', bigNumber.width + 5)
+                .attr('y', top_content + LINE_2)
+                .attr('class', 'thin')
+        }
     }
+
+    
        
     
 }
@@ -165,7 +208,6 @@ visualizeTrend = function(svg, data, xOffset, field, color, mode){
     var secondLast = parseInt(data[data.length-2][field])
     var last = parseInt(data[data.length-1][field])
     v = last-secondLast;
-    console.log('v', v)
     r = 0
     if(v < 0) r=45;  
     if(v > 0) r=-45;
@@ -173,29 +215,29 @@ visualizeTrend = function(svg, data, xOffset, field, color, mode){
     g.append('text')
         .text(function(){
             if (v > 0){
-                return 'up';
+                return 'up by';
             }else 
             if (v < 0){
-                return 'down';
+                return 'down by';
             }else{
                 return 'no ';
             }
         })
         .attr('x', 45)
-        .attr('y', top_content+15)
+        .attr('y', top_content + LINE_1)
         .attr('class', 'thin')
 
     if(v==0){
         g.append('text')
         .text('change')
         .attr('x', 45)
-        .attr('y', top_content+38)
+        .attr('y', top_content + LINE_2)
         .attr('class', 'thin')
     }else{
         g.append('text')
             .text(Math.abs(v))
             .attr('x', 45)
-            .attr('y', top_content+38)
+            .attr('y', top_content+ LINE_2)
             .style('fill', color)
     }
     
