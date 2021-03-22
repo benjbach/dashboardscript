@@ -18,7 +18,7 @@ h1{
 
 .thin{
     margin-top: 0px;
-    font-weight: 200;
+    font-weight: 100;
 }
 
 text.bigNumber{
@@ -43,5 +43,10 @@ text.bigNumber{
 
 .separator{
     stroke: #ddd;
+}
+.weekBar{
+    stroke: #ccc;
+    stroke-width: 3;
+
 }
   
