@@ -31,8 +31,7 @@ load = function(id, title, field, color, url, mode, normalized)
 
         setTitle(svg,title)                
         visualizeNumber(svg, data, 0, field, color, mode, normalized)
-        if(mode != MODE_CUMULATIVE)
-            visualizeTrend(svg, data, 250, field, color, mode)
+        visualizeTrend(svg, data, 250, field, color, mode)
         visualizeSevenDays(svg, data, 400, field, color, mode);   
     })    
 }
