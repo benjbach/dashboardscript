@@ -13,9 +13,20 @@
           <span class="thin">Nation Overview</span>
           <span class="date" id="date"></span>
         </h1>
-        <div id="cases"></div>
-        <div id="deaths"></div>
-        <div id="icu"></div>
+        <table class="layout">
+          <tr>
+              <td>
+                <div id="cases"></div>
+                <div id="deaths"></div>
+                <div id="icu"></div>
+              </td>
+              <td style="padding-left: 40px;">
+                <div id="boardDeaths"></div>
+              </td>
+              <td>
+                <div id="boardICUs"></div>
+              </td>
+          </tr>        
     </div>
     <script src="script.js"></script>
   </body>
